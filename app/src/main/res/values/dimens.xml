@@ -4,4 +4,14 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+
+    <dimen name="card_margin">15dp</dimen>
+    <dimen name="card_radius">5dp</dimen>
+    <dimen name="card_image_height">160dp</dimen>
+    <dimen name="article_title">20dp</dimen>
+    <dimen name="article_description">14dp</dimen>
+    <dimen name="ic_favorite_width">30dp</dimen>
+    <dimen name="ic_favorite_height">30dp</dimen>
+    <dimen name="ic_favorite_margin_top">10dp</dimen>
 </resources>

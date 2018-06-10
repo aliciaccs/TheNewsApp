@@ -1,6 +1,6 @@
-package com.amaita.thenewsapp.tabs;
+package com.amaita.thenewsapp.ui.tabs;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,14 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.amaita.thenewsapp.MainActivity;
 import com.amaita.thenewsapp.R;
-import com.amaita.thenewsapp.adapter.ArticleAdapter;
-import com.amaita.thenewsapp.rest.TheNewsWebClient;
-import com.amaita.thenewsapp.rest.response.Article;
-import com.amaita.thenewsapp.rest.response.TopHeadline;
+import com.amaita.thenewsapp.ui.ArticleDetailActivity;
+import com.amaita.thenewsapp.ui.MainActivity;
+import com.amaita.thenewsapp.ui.adapter.ArticleAdapter;
+import com.amaita.thenewsapp.data.rest.TheNewsWebClient;
+import com.amaita.thenewsapp.data.database.Article;
+import com.amaita.thenewsapp.data.rest.response.TopHeadline;
 import com.amaita.thenewsapp.utils.GlobalCustom;
 
 import java.util.ArrayList;
@@ -97,6 +97,10 @@ public class NewsTabFragment extends Fragment  implements  ArticleAdapter.ListIt
 
     @Override
     public void onListItemClick(int itemPosition) {
+        Article article = mAdapter.getItem(itemPosition);
+        Intent intent = new Intent (getContext(), ArticleDetailActivity.class);
+        intent.putExtra("url",article.getUrl());
+        startActivity(intent);
 
     }
 }

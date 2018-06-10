@@ -1,6 +1,6 @@
-package com.amaita.thenewsapp.rest;
+package com.amaita.thenewsapp.data.rest;
 
-import com.amaita.thenewsapp.rest.api.TheNewsServiceApi;
+import com.amaita.thenewsapp.data.rest.api.TheNewsServiceApi;
 import com.amaita.thenewsapp.utils.GlobalCustom;
 
 import java.io.IOException;

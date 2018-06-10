@@ -1,10 +1,8 @@
-package com.amaita.thenewsapp.adapter;
+package com.amaita.thenewsapp.ui.adapter;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amaita.thenewsapp.R;
-import com.amaita.thenewsapp.rest.response.Article;
+import com.amaita.thenewsapp.data.database.Article;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
@@ -58,6 +55,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
     @Override
     public int getItemCount() {
         return articles.size();
+    }
+
+    public Article getItem (int position) {
+        return articles.get(position);
     }
 
     class ArticleViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {

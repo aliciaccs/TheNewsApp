@@ -1,6 +1,7 @@
-package com.amaita.thenewsapp.rest.response;
+package com.amaita.thenewsapp.data.rest.response;
 
 
+import com.amaita.thenewsapp.data.database.Article;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;

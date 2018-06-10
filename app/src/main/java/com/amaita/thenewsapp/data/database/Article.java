@@ -1,8 +1,15 @@
-package com.amaita.thenewsapp.rest.response;
+package com.amaita.thenewsapp.data.database;
+
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "articles")
 public class Article {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     @SerializedName("author")
     private String author;
@@ -23,6 +30,22 @@ public class Article {
     @SerializedName("publishedAt")
     private String publishedAt;
 
+    public Article(String author, String title, String description, String url, String urlToImage, String publishedAt) {
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.urlToImage = urlToImage;
+        this.publishedAt = publishedAt;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getAuthor() {
         return author;

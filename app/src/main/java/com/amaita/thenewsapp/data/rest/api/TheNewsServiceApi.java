@@ -1,6 +1,6 @@
-package com.amaita.thenewsapp.rest.api;
+package com.amaita.thenewsapp.data.rest.api;
 
-import com.amaita.thenewsapp.rest.response.TopHeadline;
+import com.amaita.thenewsapp.data.rest.response.TopHeadline;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

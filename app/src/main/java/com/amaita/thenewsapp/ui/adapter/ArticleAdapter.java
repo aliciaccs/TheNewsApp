@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 import com.amaita.thenewsapp.R;
 import com.amaita.thenewsapp.data.database.Article;
+import com.amaita.thenewsapp.utils.GlobalCustom;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
@@ -21,15 +22,25 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     final private ListItemClickListener mOnClickListener;
 
-    private ArrayList<Article> articles;
+    final private FavoriteItemClickListener fOnClickListener;
+
+    private List<Article> articles;
+
+    private int tab;
 
     public interface ListItemClickListener  {
         void onListItemClick (int itemPosition);
     }
 
-    public ArticleAdapter (ArrayList<Article> articles, ListItemClickListener mOnClickListener) {
+    public interface FavoriteItemClickListener  {
+        void onFavoriteItemClick (int itemPosition);
+    }
+
+    public ArticleAdapter (List<Article> articles, ListItemClickListener mOnClickListener, FavoriteItemClickListener fOnClickListener, int tab) {
         this.mOnClickListener = mOnClickListener;
         this.articles = articles;
+        this.fOnClickListener = fOnClickListener;
+        this.tab = tab;
     }
 
     @NonNull
@@ -67,19 +78,39 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         TextView title;
         TextView description;
         ImageView thumbnail;
+        ImageView favorite;
 
         public ArticleViewHolder(View itemView) {
             super(itemView);
             thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
+            favorite = (ImageView) itemView.findViewById(R.id.favorite);
             title = (TextView) itemView.findViewById(R.id.title);
             description = (TextView) itemView.findViewById(R.id.description);
             itemView.setOnClickListener(this);
+            if (tab == GlobalCustom.FAVORITE_NEWS)
+                favorite.setVisibility(View.GONE);
+            else
+                favorite.setVisibility(View.VISIBLE);
+
         }
 
         void bind(Article article) {
 
             title.setText(article.getTitle());
             description.setText(article.getDescription());
+            favorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    favorite.setSelected(!favorite.isSelected());
+                    if (favorite.isSelected()) {
+                        favorite.setImageResource(android.R.drawable.star_big_on);
+                    } else {
+                        favorite.setImageResource(android.R.drawable.star_big_off);
+                    }
+                    int itemPosition = getAdapterPosition();
+                    fOnClickListener.onFavoriteItemClick(itemPosition);
+                }
+            });
 
             Picasso.get().load(article.getUrlToImage()).placeholder(R.drawable.img_noimg).into(thumbnail);
         }

@@ -23,6 +23,14 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="fitXY" />
 
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="@dimen/ic_favorite_width"
+                android:layout_height="@dimen/ic_favorite_height"
+                android:src="@android:drawable/star_big_off"
+                android:layout_margin="@dimen/ic_favorite_margin_top"
+                android:clickable="true"/>
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"

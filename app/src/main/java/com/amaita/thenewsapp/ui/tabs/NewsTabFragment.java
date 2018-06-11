@@ -1,7 +1,10 @@
 package com.amaita.thenewsapp.ui.tabs;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,21 +19,28 @@ import com.amaita.thenewsapp.ui.adapter.ArticleAdapter;
 import com.amaita.thenewsapp.data.rest.TheNewsWebClient;
 import com.amaita.thenewsapp.data.database.Article;
 import com.amaita.thenewsapp.data.rest.response.TopHeadline;
+import com.amaita.thenewsapp.ui.viewmodel.MainActivityViewModel;
+import com.amaita.thenewsapp.ui.viewmodel.MainActivityViewModelFactory;
 import com.amaita.thenewsapp.utils.GlobalCustom;
+import com.amaita.thenewsapp.utils.InjectorUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NewsTabFragment extends Fragment  implements  ArticleAdapter.ListItemClickListener {
+public class NewsTabFragment extends Fragment  implements  ArticleAdapter.ListItemClickListener, ArticleAdapter.FavoriteItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String ARG_TITLE = "section_title";
     private TheNewsWebClient theNewsWebClient;
     private RecyclerView rv_articles;
     private ArticleAdapter mAdapter;
+
+    //view Model
+    private MainActivityViewModel mViewModel;
 
     public NewsTabFragment() {
         theNewsWebClient = new TheNewsWebClient();
@@ -42,43 +52,26 @@ public class NewsTabFragment extends Fragment  implements  ArticleAdapter.ListIt
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         rv_articles = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        getArticles(getArguments().getInt(ARG_SECTION_NUMBER));
+        //get the viewModel from the factory
+        MainActivityViewModelFactory factory = InjectorUtils.provideMainViewModelFactory(getContext(),getArguments().getInt(ARG_SECTION_NUMBER) );
+        mViewModel = ViewModelProviders.of(this,factory).get(MainActivityViewModel.class);
+        mViewModel.getArticles().observe(this, new Observer<List<Article>>() {
+            @Override
+            public void onChanged(@Nullable List<Article> articles) {
+                if (articles != null)
+                setArticleAdapter(articles);
+            }
+        });
+
         return rootView;
     }
 
-    public void getArticles (int section) {
-        if (section == GlobalCustom.ALL_NEWS) {
-        //obtener data del servicio web
-            theNewsWebClient.getApiService().getTopHeadline("ve").enqueue(new Callback<TopHeadline>() {
-                @Override
-                public void onResponse(Call<TopHeadline> call, Response<TopHeadline> response) {
-                    //validar si hubo algun error
-                    if (response.isSuccessful()) {
-                        if (response.body() != null) {
-                            if (!response.body().status.equalsIgnoreCase("error")) {
-                                setArticleAdapter(response.body().articles);
-                            }
-                        }
-                    }
 
-                }
 
-                @Override
-                public void onFailure(Call<TopHeadline> call, Throwable t) {
-
-                }
-            });
-
-        } else {
-        // obtener data de persistencia
-        }
-
-    }
-
-    public void setArticleAdapter (ArrayList<Article> articles) {
+    public void setArticleAdapter (List<Article> articles) {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(),1,GridLayoutManager.VERTICAL,false);
         rv_articles.setLayoutManager(layoutManager);
-        mAdapter = new ArticleAdapter(articles,this);
+        mAdapter = new ArticleAdapter(articles,this, this, getArguments().getInt(ARG_SECTION_NUMBER));
         rv_articles.setAdapter(mAdapter);
     }
 
@@ -102,5 +95,10 @@ public class NewsTabFragment extends Fragment  implements  ArticleAdapter.ListIt
         intent.putExtra("url",article.getUrl());
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onFavoriteItemClick(int itemPosition) {
+        mViewModel.saveFavoriteArticle(itemPosition);
     }
 }

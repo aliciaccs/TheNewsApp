@@ -4,7 +4,7 @@ package com.amaita.thenewsapp.data.rest.response;
 import com.amaita.thenewsapp.data.database.Article;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class TopHeadline {
 
@@ -15,7 +15,7 @@ public class TopHeadline {
     public int totalResults;
 
     @SerializedName("articles")
-    public ArrayList<Article> articles;
+    public List<Article> articles;
 
     public String getStatus() {
         return status;
@@ -33,11 +33,11 @@ public class TopHeadline {
         this.totalResults = totalResults;
     }
 
-    public ArrayList<Article> getArticles() {
+    public List<Article> getArticles() {
         return articles;
     }
 
-    public void setArticles(ArrayList<Article> articles) {
+    public void setArticles(List<Article> articles) {
         this.articles = articles;
     }
 }

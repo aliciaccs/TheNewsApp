@@ -1,11 +1,12 @@
 package com.amaita.thenewsapp.data.database;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "articles")
+@Entity(tableName = "articles", indices = {@Index(value = {"url"}, unique = true)})
 public class Article {
 
     @PrimaryKey(autoGenerate = true)
